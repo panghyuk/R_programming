@@ -98,3 +98,8 @@ hist(perm_diffs, xlab='Score Diff', main='')
 abline(v = mean_diff)
 
 mean(perm_diffs > mean_diff)
+
+netflix <- read.csv('./week4_0922/r_datascience_4th_data/NetflixOriginals.csv')
+netflix_subset = subset(netflix, Genre == "Comedy" | Genre == 'Documentary')
+
+t.test(IMDB.Score ~ Genre, data = netflix_subset) #장르에 따른 IMDB 점수 확인
