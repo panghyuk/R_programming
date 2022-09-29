@@ -14,23 +14,22 @@ pf(5.409, df1=3, df2=5)
 qf(0.95, df1=3, df2=5)
 rf(10, df1=3, df2=5)
 
-data = read.table('./data/r_datascience_5th_data/chapter7.txt', header=TRUE)
+data = read.table('./week5_0929/r_datascience_5th_data/chapter7.txt', header=TRUE)
 var.test(data$weight ~ data$gender)
-t.test( 	data$weight ~ data$gender,	mu=0,	alternative=less,	var.equal=TRUE )
+t.test(data$weight ~ data$gender,	mu=0,	var.equal=TRUE ) # (alternative=less) 생략
 
-data = read.csv('./data/r_datascience_5th_data/01.anorexia.csv', header=TRUE)
+data = read.csv('./week5_0929/r_datascience_5th_data/01.anorexia.csv', header=TRUE)
 
 n <- length(data$Prior - data$Post)
-m <- mean( data$Prior - data$Post )
+m <- mean( data$Prior - data$Post)
 s <- sd (data$Prior - data$Post)
-tt = ( t.t <- m / (s / sqrt(n)) )
+tt = (t.t <- m / (s / sqrt(n)))
 pt(tt, df=n-1)
 
+t.test(data$Prior, data$Post, 	paired=TRUE, 	alternative="less")
 
-t.test(     data$Prior, data$Post, 	paired=TRUE, 	alternative="less")
 
-
-ad = read.csv('./data/r_datascience_5th_data/age.data.csv', header=TRUE)
+ad = read.csv('./week5_0929/r_datascience_5th_data/age.data.csv', header=TRUE)
 y1 <- ad$age[ad$scale=="1"]
 y2 <- ad$age[ad$scale=="2"]
 y3 <- ad$age[ad$scale=="3"]
@@ -39,14 +38,14 @@ y1.mean <- mean( y1 )
 y2.mean <- mean( y2 )
 y3.mean <- mean( y3 )
 
-sse.1 <- sum( (y1 - y1.mean)^2 )
-sse.2 <- sum( (y2 - y2.mean)^2 )
-sse.3 <- sum( (y3 - y3.mean)^2 )
+sse.1 <- sum((y1 - y1.mean)^2)
+sse.2 <- sum((y2 - y2.mean)^2)
+sse.3 <- sum((y3 - y3.mean)^2)
 
 (sse <- sse.1 + sse.2 + sse.3)
 (dfe <- (length(y1)-1) + (length(y2)-1) + (length(y3)-1))
 
-y <- mean(ad$age)
+y <- mean(ad$age) # 전체 평균
 
 sst.1 <- length(y1) * sum((y1.mean - y)^2)
 sst.2 <- length(y2) * sum((y2.mean - y)^2)
