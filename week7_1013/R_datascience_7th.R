@@ -93,22 +93,25 @@ house_lm <- lm(AdjSalePrice ~ SqFtTotLiving + SqFtLot + Bathrooms +
 summary(house_lm)
 
 
-## Lung 예제
-lung = read.table('./week7_1013/LungDisease.csv', sep=',' ,header=TRUE)
+## Lung 예제(다항 함수)
+lung = read.table('./week7_1013/LungDisease.csv', sep=',' ,header = TRUE)
 
 model <- lm(PEFR ~ Exposure, data=lung)
 MSE = mean((lung$PEFR - predict(model , newdata = lung))^2)
 MSE
 
-lung$ex2 = lung$Exposure^2
-lung$ex3 = lung$Exposure^3
-lung$ex4 = lung$Exposure^4
-model_poly <- lm(PEFR ~ Exposure + ex2 + ex3 + ex4, data=lung)
+lung$ex2 = lung$Exposure^2 # 2차항
+lung$ex3 = lung$Exposure^3 # 3차항
+lung$ex4 = lung$Exposure^4 # 4차항
+model_poly <- lm(PEFR ~ Exposure + ex2 + ex3 + ex4, data = lung)
 MSE = mean((lung$PEFR - predict(model_poly , newdata = lung))^2)
 MSE
 
 
 library(glmnet)
+
+# CV 예시
+house = read.table('./week7_1013/house_sales.csv', sep='\t',header=TRUE)
 
 x = as.matrix(house[, c("SqFtTotLiving", "SqFtLot", "Bathrooms", 
               "Bedrooms", "BldgGrade")])
