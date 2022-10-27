@@ -34,6 +34,8 @@ acc = mean(pred$class == bank$y)
 
 
 
+loan_data <- read.csv( './week9_1027/loan_data.csv', stringsAsFactors = TRUE)
+
 ## Logistic Regression
 logistic_model <- glm(outcome ~ payment_inc_ratio + purpose_ + 
                         home_ + emp_len_ + borrower_score,
@@ -42,14 +44,15 @@ logistic_model
 summary(logistic_model)
 
 #prediction
-pred = predict(logistic_model , loan_data)
+pred = predict(logistic_model, loan_data)
 prob = 1/(1+exp(-pred))
-true_y = loan_data$outcome=='paid off'
-pred_y = prob>0.5
+true_y = loan_data$outcome == 'paid off'
+pred_y = prob > 0.5
 #accuracy
-sum(true_y==pred_y)/length(true_y)
+sum(true_y == pred_y)/length(true_y)
 
-#iris
+
+## iris
 iris2 = iris[iris$Species=='setosa' | iris$Species=='versicolor',]
 iris2$Species = iris2$Species=='setosa'
 logistic_model <- glm(Species ~ Sepal.Length + Sepal.Width + 
@@ -59,6 +62,18 @@ logistic_model <- glm(Species ~ Sepal.Length + Sepal.Width +
 pred = predict(logistic_model , iris2)
 prob = 1/(1+exp(-pred))
 true_y = iris2$Species
-pred_y = prob>0.5
+pred_y = prob > 0.5
 sum(true_y==pred_y)/length(true_y)
 
+## bank
+bank <- read.csv('./week9_1027/bank.csv', stringsAsFactors = TRUE)
+lr <- glm(y ~ age + job + marital + education + default + balance + housing,
+                      data = bank, family = 'binomial')
+
+pred = predict(lr, bank)
+prob = 1/(1+exp(-pred))
+true_y = (bank$y == 'yes')
+pred_y = prob > 0.5
+
+# accuracy
+sum(true_y == pred_y)/length(true_y)
