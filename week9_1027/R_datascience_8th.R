@@ -71,9 +71,9 @@ lr <- glm(y ~ age + job + marital + education + default + balance + housing,
                       data = bank, family = 'binomial')
 
 pred = predict(lr, bank)
-prob = 1/(1+exp(-pred))
+prob = 1/(1 + exp(-pred))
 true_y = (bank$y == 'yes')
-pred_y = prob > 0.5
+pred_y = prob > 0.7
 
 # accuracy
 sum(true_y == pred_y)/length(true_y)
