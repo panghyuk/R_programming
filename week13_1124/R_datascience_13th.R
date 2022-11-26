@@ -121,3 +121,14 @@ plot(iris$Sepal.Length, iris$Sepal.Width , col=as.factor(db$cluster),
 legend(7.5,4.0,legend = as.numeric(levels(as.factor(db$cluster))),
        col = as.numeric(levels(as.factor(db$cluster)))+1, pch = 1)
 
+
+### ex3
+student <- read.csv('./week13_1124/Student Performance new.csv')
+df <- student[, c("math.percentage","reading.score.percentage")]
+db = dbscan(df , eps = 0.03, MinPts = 3)
+df$cluster = factor(db$cluster)
+df$isseed = factor(db$isseed)
+
+ggplot(data = df, aes(x = math.percentage, y = reading.score.percentage, color = cluster, shape = isseed)) + 
+  geom_point(alpha = .3)
+
