@@ -49,7 +49,6 @@ sum(is.na(diab))
 
 
 ### 이상치 확인
-sum(diab$Pregnancies == 0)
 sum(diab$Glucose == 0)
 sum(diab$BloodPressure == 0)
 sum(diab$SkinThickness == 0)
@@ -132,4 +131,33 @@ ModelMetrics::auc(as.factor(y_test$Outcome),predicted = as.factor(rf_pred))
 
 
 ### 모델링 (XGB)
-xgb <- xgboost()
+diab <- read.csv('./project/diabetes.csv')
+idx <- diab$Glucose != 0 & diab$BMI != 0
+df <- diab[idx,]
+df$BloodPressure[df$BloodPressure == 0] <- mean(df$BloodPressure)
+df$SkinThickness[df$SkinThickness == 0] <- mean(df$SkinThickness)
+df$Insulin[df$Insulin == 0] <- mean(df$Insulin)
+
+n_idx <- sample(1:nrow(df), round(nrow(df) * 0.8))
+train <- df[n_idx,]
+test <- df[-n_idx,]
+
+x_train <- select(train, -c("Outcome"))
+y_train <- select(train, c("Outcome"))
+x_test <- select(test, -c("Outcome"))
+y_test <- select(test, c("Outcome"))
+
+x_train <- data.matrix(x_train)
+x_test <- data.matrix(x_test)
+y_train <- data.matrix(y_train$Outcome)
+y_test <- data.matrix(y_test$Outcome)
+
+xgb <- xgboost(data = x_train, label = y_train, objective = 'binary:logistic',
+               params=list(subsample=0.8, eta=0.1), nrounds=100)
+xgb
+
+xgb_pred <- predict(xgb, newdata = x_test)
+xgb_pred <- as.numeric(xgb_pred > 0.5)
+caret::confusionMatrix(data = as.factor(xgb_pred), reference = as.factor(y_test))
+ModelMetrics::auc(as.factor(y_test),predicted = as.factor(xgb_pred))
+
