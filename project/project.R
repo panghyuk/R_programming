@@ -122,7 +122,7 @@ y_train <- select(train, c("Outcome"))
 x_test <- select(test, -c("Outcome"))
 y_test <- select(test, c("Outcome"))
 
-rf <- randomForest(y_train$Outcome ~ ., data = x_train, importance = TRUE)
+rf <- randomForest(y_train$Outcome ~ ., data = x_train, importance = TRUE, ntree = 500, mtry = 5)
 rf
 
 rf_pred <- predict(rf, newdata = x_test)
@@ -153,7 +153,7 @@ y_train <- data.matrix(y_train$Outcome)
 y_test <- data.matrix(y_test$Outcome)
 
 xgb <- xgboost(data = x_train, label = y_train, objective = 'binary:logistic',
-               params=list(subsample=0.8, eta=0.1), nrounds=100)
+               params=list(subsample = 0.65, eta = 0.1), nrounds = 200)
 xgb
 
 xgb_pred <- predict(xgb, newdata = x_test)
